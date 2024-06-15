@@ -70,10 +70,9 @@ void read_config(){
     printf("Config is read\n");   
 }
 
-std::string filepath1 = "files/cube.vtk";
-std::string filepath2 = "files/sphere_octo1.vtk";
-std::string filepath3 = "files/sphere_octo3.vtk";
-std::string filepath4 = "files/sphere_octo5.vtk";
+std::string filepath1 = "Projekt3_Data/EU_501x501.dat";
+std::string filepath2 = "Projekt3_Data/Himalaje_201x201.dat";
+std::string filepath3 = "Projekt3_Data/SK_101x101.dat";
 
 void calculate_normals(){
 	for (Point& point : allpoints) {
@@ -274,7 +273,9 @@ void readVtkFile(const std::string& filepath, Allpoints& allpoints, Scene& scene
     calculate_colors();
 }
 
-
+bool readDatFile(int filenum, ){
+	
+}
 
 
 #endif // reader_INCLUDED
