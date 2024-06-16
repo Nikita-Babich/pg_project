@@ -8,7 +8,7 @@
 
 //API
 #include <windows.h>
-#include <commdlg.h>
+#include <commdlg.h> //dialog windows
 #include <WindowsX.h>
 
 //Frequently used
@@ -128,9 +128,10 @@ int WINAPI WinMain(
 	// Segment for setup
 	
 	//first read here
+	OpenFile();
 	
-	read_config();
-	readVtkFile(filepath1, allpoints, scene);
+	//read_config();
+	//readVtkFile(filepath1, allpoints, scene);
 	
 	InitializeBitmapInfo(&bmi);
 	InitializeBuffer();
@@ -216,7 +217,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				// Process the DEL key. 
 				break; 
 			case VK_ESCAPE: 
-				read_config();
+				//read_config();
 				break; 
 			case VK_F2: 
 				// Process the F2 key. 
@@ -248,22 +249,23 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case 'X': Dmode = !Dmode; printf(" Wireframe : %s\n", Dmode ? "false" : "true"); break;
 			case 'C': break;
 			case 'V': triangle_method = !triangle_method; printf(" Goraud : %s\n", triangle_method ? "true" : "false"); break;
+			case 'O': OpenFile(); break;
 				
 			case '1':
 				//read_config();
-				readVtkFile(filepath1, allpoints, scene);
+				//readVtkFile(filepath1, allpoints, scene);
 				break;
 			case '2':
 				//read_config();
-				readVtkFile(filepath2, allpoints, scene);
+				//readVtkFile(filepath2, allpoints, scene);
 				break;
 			case '3':
 				//read_config();
-				readVtkFile(filepath3, allpoints, scene);
+				//readVtkFile(filepath3, allpoints, scene);
 				break;
 			case '4':
 				//read_config();
-				readVtkFile(filepath4, allpoints, scene);
+				//readVtkFile(filepath4, allpoints, scene);
 				break;
 			
 			//case 'T': shearMainContour(UP);  break;

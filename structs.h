@@ -48,6 +48,8 @@ typedef struct {	// used for vectors and points in 3d and 2d
     //std::vector<Face_*> facePtrs;
 } Point;
 
+std::vector<std::vector<Point>> pointGrid; //after reading the file
+
 struct Face_ {	// used for triangles in 3d
     Point* A;          // X-coordinate
     Point* B;         // Y-coordinate

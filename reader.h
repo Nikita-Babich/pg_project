@@ -70,11 +70,9 @@ void read_config(){
     printf("Config is read\n");   
 }
 
-std::string filepath1 = "Projekt3_Data/EU_501x501.dat";
-std::string filepath2 = "Projekt3_Data/Himalaje_201x201.dat";
-std::string filepath3 = "Projekt3_Data/SK_101x101.dat";
 
-void calculate_normals(){
+
+void calculate_normals(){ //has to be reworked for 4 neighbors in pointgrid
 	for (Point& point : allpoints) {
 		point.normal = normalise(point.pos);
 	};
@@ -87,6 +85,7 @@ V3 calculateReflection(const V3& light, const V3& normal) {
     V3 reflection = (-light) - ((2 * dotProduct) * normal);
     return reflection;
 }
+
 int limitTo0To255(float value) {
     if (value < 0.0f) {
         return 0;
@@ -159,6 +158,7 @@ void calculate_colors(){
 	printf("colors calculated");
 }
 
+// not to be used anymore. Comment out after replacement
 void readVtkFile(const std::string& filepath, Allpoints& allpoints, Scene& scene) {
 	if (!allpoints.empty()) {
         allpoints.clear();
@@ -273,9 +273,112 @@ void readVtkFile(const std::string& filepath, Allpoints& allpoints, Scene& scene
     calculate_colors();
 }
 
-bool readDatFile(int filenum, ){
-	
+//bool extractDimensions(const std::wstring& filename, size_t& width, size_t& height) {
+//    size_t start = filename.find(L'_');
+//    size_t end = filename.find(L'x', start);
+//    try {
+//        size_t width = std::stoul(filename.substr(start + 1, end - start - 1));
+//        size_t height = std::stoul(filename.substr(end + 1, filename.find(L'.', end) - end - 1));
+//        
+//    } catch (const std::invalid_argument& e) {
+//        std::wcerr << L"Invalid argument: " << e.what() << std::endl;
+//        return false;
+//    } catch (const std::out_of_range& e) {
+//        std::wcerr << L"Out of range: " << e.what() << std::endl;
+//        return false;
+//    }
+//    return true;
+//}
+int extractDimensionFromFile(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error: Unable to open file " << filename << std::endl;
+        return -1;
+    }
+
+    size_t lineCount = 0;
+    std::string line;
+    while (std::getline(file, line)) {
+        ++lineCount;
+    }
+
+    file.close();
+
+    return static_cast<int>(std::sqrt(lineCount));
 }
+
+//std::string filepath1 = "Projekt3_Data/EU_501x501.dat";
+//std::string filepath2 = "Projekt3_Data/Himalaje_201x201.dat";
+//std::string filepath3 = "Projekt3_Data/SK_101x101.dat";
+void OpenFile() {
+    // Initialize OPENFILENAME structure
+    OPENFILENAME ofn;
+    wchar_t szFile[260] = { 0 }; //wiecharacters instead of char
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = NULL;
+    ofn.lpstrFile = szFile;
+    ofn.nMaxFile = sizeof(szFile);
+    //ofn.lpstrFilter = "All Files\0*.*\0Text Files\0*.TXT\0";
+    ofn.nFilterIndex = 1;
+    ofn.lpstrFileTitle = NULL;
+    ofn.nMaxFileTitle = 0;
+    ofn.lpstrInitialDir = NULL;
+    ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+    // Display the Open dialog box 
+    if (GetOpenFileName(&ofn) == TRUE) {
+        std::cout << "Selected file: " << ofn.lpstrFile << std::endl;
+        std::wcout << L"Selected file: " << ofn.lpstrFile << std::endl;
+        
+        std::ifstream file(ofn.lpstrFile);
+    	if (!file) {
+        	std::cerr << "Error: Unable to open file " << ofn.lpstrFile << std::endl;
+       		return;
+    	};
+    	//fill structs here
+    	size_t height, width;
+    	//converting to normal string
+    	std::wstring ws( ofn.lpstrFile ); 
+		std::string normalFileString = std::string( ws.begin(), ws.end() );
+		
+    	height = extractDimensionFromFile(normalFileString);
+    	width = height;
+    	std::cout << width << height;
+    	pointGrid.resize(width, std::vector<Point>(height));
+    	std::cout << "grid resized\n";
+    	
+    	double a, b, c;
+        for(int i = 0; i<width; i++) {
+	        for(int j = 0; j<height; j++) {
+	        	file >> a >> b >> c;
+	            V3 readCoords = {a, b, c};
+	            Point newPoint;
+	            newPoint.pos = readCoords;
+	            // fill global pointGrid
+	            pointGrid[i][j] = newPoint;
+        	}
+        }
+    	std::cerr << "pointgrid filled" << "\n";
+    	file.close();
+    } else {
+        std::cout << "No file selected or an error occurred." << std::endl;
+    }
+}
+
+//bool readDatFile(){
+//	if (!allpoints.empty()) {
+//        allpoints.clear();
+//	}
+//    if (!scene.empty()) {
+//        scene.clear();
+//    }
+//    std::ifstream file(filepath);
+//    if (!file) {
+//        std::cerr << "Error: Unable to open file " << filepath << std::endl;
+//        return;
+//    }
+//}
 
 
 #endif // reader_INCLUDED
