@@ -311,6 +311,8 @@ int extractDimensionFromFile(const std::string& filename) {
 //std::string filepath2 = "Projekt3_Data/Himalaje_201x201.dat";
 //std::string filepath3 = "Projekt3_Data/SK_101x101.dat";
 void OpenFile() {
+	read_config();
+	std::cout << "config complete";
     // Initialize OPENFILENAME structure
     OPENFILENAME ofn;
     wchar_t szFile[260] = { 0 }; //wiecharacters instead of char
@@ -349,36 +351,39 @@ void OpenFile() {
     	std::cout << "grid resized\n";
     	
     	double a, b, c;
+    	minheight = 0;
+    	maxheight = 0;
         for(int i = 0; i<width; i++) {
 	        for(int j = 0; j<height; j++) {
 	        	file >> a >> b >> c;
 	            V3 readCoords = {a, b, c};
 	            Point newPoint;
 	            newPoint.pos = readCoords;
+	            newPoint.color = colorByHeight(c);
 	            // fill global pointGrid
 	            pointGrid[i][j] = newPoint;
         	}
         }
     	std::cerr << "pointgrid filled" << "\n";
+    	//calculate normals
+    	for(int i = 0; i<width; i++) {
+	        for(int j = 0; j<height; j++) {
+	        	//if on the edge, 0,0,1, else - depending on the neighbours
+	        	if( i==0 or i == width-1 or j == 0 or j == height-1){
+	        		pointGrid[i][j].normal = {0,0,1};
+				}
+	        }
+	    }
+	    std::cout << "normals calculated\n";
+    	
+        allpoints.clear(); scene.clear(); //reset
+    	//save allpoints
+    	//save scene
     	file.close();
     } else {
         std::cout << "No file selected or an error occurred." << std::endl;
     }
 }
-
-//bool readDatFile(){
-//	if (!allpoints.empty()) {
-//        allpoints.clear();
-//	}
-//    if (!scene.empty()) {
-//        scene.clear();
-//    }
-//    std::ifstream file(filepath);
-//    if (!file) {
-//        std::cerr << "Error: Unable to open file " << filepath << std::endl;
-//        return;
-//    }
-//}
 
 
 #endif // reader_INCLUDED

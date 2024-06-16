@@ -26,4 +26,16 @@ void ExtractRGBComponents(COLORREF color, int *red, int *green, int *blue) {
     *blue = GetBValue(color);
 }
 
+float minheight;
+float maxheight;
+
+COLORREF colorByHeight(float value){
+	float range = maxheight - minheight;
+    float normalizedValue = (value - minheight) / range;
+    int red = static_cast<int>(255 * normalizedValue);
+    int green = static_cast<int>(255 * (1 - normalizedValue));
+    int blue = 0;
+    return RGB(red, green, blue);
+}
+
 #endif // COLORS_INCLUDED

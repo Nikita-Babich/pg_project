@@ -141,7 +141,7 @@ int WINAPI WinMain(
 	//main_contour = rcont(6);
 	
 	//UpdateWindow(hwnd);
-	printf("\nWindow is running");
+	printf("\nWindow is running\n");
 	
 	
 	
@@ -243,35 +243,31 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				break;
 			case 'K': camera.dist = camera.dist + 0.1; 
 				//camera.pos = camera.dist * camera.pos;
-				 break;
+				break;
 			
-			case 'Z': Pmode = !Pmode; printf(" Spherical : %s\n", Pmode ? "true" : "false"); break;
+			//case 'Z': Pmode = !Pmode; printf(" Spherical : %s\n", Pmode ? "true" : "false"); break;
 			case 'X': Dmode = !Dmode; printf(" Wireframe : %s\n", Dmode ? "false" : "true"); break;
 			case 'C': break;
 			case 'V': triangle_method = !triangle_method; printf(" Goraud : %s\n", triangle_method ? "true" : "false"); break;
 			case 'O': OpenFile(); break;
 				
 			case '1':
-				//read_config();
-				//readVtkFile(filepath1, allpoints, scene);
+				
 				break;
 			case '2':
-				//read_config();
-				//readVtkFile(filepath2, allpoints, scene);
+				
 				break;
 			case '3':
-				//read_config();
-				//readVtkFile(filepath3, allpoints, scene);
+				
 				break;
 			case '4':
-				//read_config();
-				//readVtkFile(filepath4, allpoints, scene);
+				
 				break;
 			
-			//case 'T': shearMainContour(UP);  break;
-			//case 'G': shearMainContour(DOWN);  break;
-			//case 'H': shearMainContour(RIGHT);  break;
-			//case 'F': shearMainContour(LEFT);  break;
+			//case 'T':   break;
+			//case 'G':   break;
+			//case 'H':   break;
+			//case 'F':   break;
 			
 			//case 'B': triangle_method = (triangle_method+1)%2;  break;
 			//case 'R': main_contour = rcont(10);  break;
