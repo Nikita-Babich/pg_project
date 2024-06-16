@@ -155,20 +155,31 @@ V3 crossProduct(const V3& u, const V3& v) {
     cross.z = u.x * v.y - u.y * v.x;
     return cross;
 }
+V3 normalise(V3 origin){
+	if (len(origin) == 0) return {0,0,1};  //default might be wrong
+	return (1/len(origin))*origin;
+}
+//V3 normalise(V3 A){ 
+//	float L = len(A); 
+//	if(L>0) {
+//		return (V3){A.x/L, A.y/L, A.z/L};
+//	} else {
+//		return (V3){0, -1, 0}; //default might be wrong
+//	}
+//}
+V3 normalFrom4(V3 left, V3 right, V3 down, V3 up){
+	V3 x1 = right - left;
+	V3 x2 = up - down;
+	V3 x = crossProduct(x1,x2);
+	return normalise(x);
+}
 
 
 
 //float scalarProduct(Point A, Point B){ return A.x*B.x + A.y*B.y + A.z*B.z; }
 //Point dif(Point A, Point B){ return (Point){B.x-A.x, B.y-A.y, B.z-A.z}; }
 
-V3 normalise(V3 A){ 
-	float L = len(A); 
-	if(L>0) {
-		return (V3){A.x/L, A.y/L, A.z/L};
-	} else {
-		return (V3){0, -1, 0};
-	}
-}
+
 
 void calculateFaceNormal(Face& face) {
     //Point u = {face.B->x - face.A->x, face.B->y - face.A->y, face.B->z - face.A->z};

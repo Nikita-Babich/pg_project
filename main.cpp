@@ -128,9 +128,11 @@ int WINAPI WinMain(
 	// Segment for setup
 	
 	//first read here
+	read_config();
+	std::cout << "config complete\n";
+	
 	OpenFile();
 	
-	//read_config();
 	//readVtkFile(filepath1, allpoints, scene);
 	
 	InitializeBitmapInfo(&bmi);

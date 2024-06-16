@@ -66,7 +66,7 @@ void read_config(){
         }
         lineCount++;
     }
-    //configFile.close(); //problem line, without it better
+    configFile.close(); //problem line, without it better
     printf("Config is read\n");   
 }
 
@@ -155,7 +155,7 @@ void calculate_colors(){
 	for (Point& point : allpoints) {
 		point.color = extract_color(point);
 	};
-	printf("colors calculated");
+	printf("colors calculated\n");
 }
 
 // not to be used anymore. Comment out after replacement
@@ -311,8 +311,8 @@ int extractDimensionFromFile(const std::string& filename) {
 //std::string filepath2 = "Projekt3_Data/Himalaje_201x201.dat";
 //std::string filepath3 = "Projekt3_Data/SK_101x101.dat";
 void OpenFile() {
-	read_config();
-	std::cout << "config complete";
+	std::cout << "\n--------------\n";
+	
     // Initialize OPENFILENAME structure
     OPENFILENAME ofn;
     wchar_t szFile[260] = { 0 }; //wiecharacters instead of char
@@ -346,7 +346,8 @@ void OpenFile() {
 		
     	height = extractDimensionFromFile(normalFileString);
     	width = height;
-    	std::cout << width << height;
+    	std::cout << width << " " << height << " ";
+    	std::vector<std::vector<Point>>().swap(pointGrid); //swapt with empty to release old memory
     	pointGrid.resize(width, std::vector<Point>(height));
     	std::cout << "grid resized\n";
     	
@@ -371,6 +372,13 @@ void OpenFile() {
 	        	//if on the edge, 0,0,1, else - depending on the neighbours
 	        	if( i==0 or i == width-1 or j == 0 or j == height-1){
 	        		pointGrid[i][j].normal = {0,0,1};
+				} else{
+					pointGrid[i][j].normal = normalFrom4(
+						pointGrid[i-1][j].pos, 
+						pointGrid[i+1][j].pos, 
+						pointGrid[i][j-1].pos, 
+						pointGrid[i][j+1].pos
+						);
 				}
 	        }
 	    }
