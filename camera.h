@@ -79,6 +79,11 @@ V3 rotateAroundAxis(V3 p, V3 axis, float angle) {
     result.z = newZ;
     return result;
 }
+void calc_camera_pose(){
+	camera.pos.x = (maxx-minx)/2;
+	camera.pos.y = (maxy-miny)/2;
+	camera.pos.z = (maxz-minz)/2;
+}
 void calc_orient(){ //use alpha beta to calculte orientation vectors, matices
 	// horisontal rotation
 	camera.forw = rotateAroundAxis(y_const, up_const, camera.beta);
@@ -357,13 +362,13 @@ void drawScene(){
 	Contour cont1;
 	Segments f;
 	if(Dmode){
-		for (const Face& face : scene) {
-        	cont1 = FaceToContour(face);
-			for (Point& point : cont1) {
-				point = project_point2(point);
-			}
-			if(!looksatme(face)){fill_triangle(cont1, cont1);}
-    	};
+//		for (const Face& face : scene) {
+//        	cont1 = FaceToContour(face);
+//			for (Point& point : cont1) {
+//				point = project_point2(point);
+//			}
+//			if(!looksatme(face)){fill_triangle(cont1, cont1);}
+//    	};
     	for (const Face& face : scene) {
         	cont1 = FaceToContour(face);
 			for (Point& point : cont1) {

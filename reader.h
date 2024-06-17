@@ -352,11 +352,17 @@ void OpenFile() {
     	std::cout << "grid resized\n";
     	
     	double a, b, c;
-    	minheight = 0;
-    	maxheight = 0;
+    	minz = 99999; maxz = -99999;
+    	minx=99999; maxx=-99999; miny=99999; maxy=-99999;
         for(int i = 0; i<width; i++) {
 	        for(int j = 0; j<height; j++) {
 	        	file >> a >> b >> c;
+	        	if(a<minx)minx=a;
+	        	if(a>maxx)maxx=a;
+	        	if(b<miny)miny=b;
+	        	if(b>maxy)maxy=b;
+	        	if(c<minz)minz=c;
+	        	if(c>maxz)maxz=c;
 	            V3 readCoords = {a, b, c};
 	            Point newPoint;
 	            newPoint.pos = readCoords;
@@ -365,7 +371,8 @@ void OpenFile() {
 	            pointGrid[i][j] = newPoint;
         	}
         }
-    	std::cerr << "pointgrid filled" << "\n";
+        calc_camera_pose();
+    	std::cerr << "pointgrid filled" << minx << " " << maxx << " " << miny << " " << maxy << " " << minz << " " << maxz << " " <<"\n";
     	//calculate normals
     	for(int i = 0; i<width; i++) {
 	        for(int j = 0; j<height; j++) {
