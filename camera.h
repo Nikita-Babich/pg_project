@@ -374,7 +374,7 @@ void drawScene(){
         	cont1 = FaceToContour(face);
 			for (Point& point : cont1) {
 				point = project_point2(point);
-				if (point.pos.x > DRAW_WIDTH or point.pos.y > DRAW_WIDTH or point.pos.x < 0 or point.pos.y < 0) quit = true;
+				//if (point.pos.x > DRAW_WIDTH or point.pos.y > DRAW_WIDTH or point.pos.x < 0 or point.pos.y < 0) quit = true;
 			}
 			if(quit) break;
 			if(looksatme(face)){fill_triangle(cont1, cont1);}
