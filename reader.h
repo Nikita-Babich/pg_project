@@ -325,7 +325,7 @@ void OpenFile() {
        		return;
     	};
     	//fill structs here
-    	size_t height, width;
+    	
     	//converting to normal string
     	std::wstring ws( ofn.lpstrFile ); 
 		std::string normalFileString = std::string( ws.begin(), ws.end() );
@@ -350,7 +350,10 @@ void OpenFile() {
 	        	if(b>maxy)maxy=b;
 	        	if(c<minz)minz=c;
 	        	if(c>maxz)maxz=c;
-	            V3 readCoords = {a, b, -c}; // replace with scaling
+	            V3 readCoords = {
+					static_cast<float>(a), 
+					static_cast<float>(b), 
+					static_cast<float>(-c)}; // replace with scaling
 	            Point newPoint;
 	            newPoint.pos = readCoords;
 	            newPoint.color = colorByHeight(c);
@@ -410,5 +413,17 @@ void OpenFile() {
     }
 }
 
+void scale_heights(float strength){
+	for(int i = 0; i< width-1; i++){
+    	for(int j = 0; j< height-1; j++){
+    		pointGrid[i][j].pos.z *= strength;
+    	}	
+    }
+}
+void scale_all(float strength){
+	//camera.up = strength*camera.up;
+	//camera.right = strength*camera.right;
+	scaling = scaling * strength;
+}
 
 #endif // reader_INCLUDED

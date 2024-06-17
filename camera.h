@@ -35,7 +35,7 @@ void report(){
 
 
 float fov = M_PI/2;
-float scaling = 100;
+float scaling = 50;
 
 V3 x_const = {1,0,0};
 V3 y_const = {0,1,0};
@@ -95,7 +95,7 @@ void calc_orient(){ //use alpha beta to calculte orientation vectors, matices
 }
 
 void move(Direction dir){
-	calc_orient();
+	//calc_orient();
 	float ms = 0.05; //ms = movement speed
 	switch (dir) {
     case LEFT:
@@ -160,7 +160,7 @@ void turn(Direction dir){
 	if(camera.beta < 0 ) {
 		camera.beta += M_PI*2;
 	}
-	calc_orient();
+	//calc_orient();
 }
 void rot(Direction dir){
 	float rs = 0.03;
@@ -203,16 +203,17 @@ void rot(Direction dir){
 	}
 	
 	//camera.pos = camera.dist*((V3){0,-1,0}); //test
-	calc_orient();
+	//calc_orient();
 	//camera.pos = rotateAroundAxis(camera.pos, up_const, camera.beta);
 	//camera.pos = rotateAroundAxis(camera.pos, camera.right, camera.alpha);
 	
 }
 
 Pixel project_point(const Point& P){
-	calc_orient();
+	//calc_orient();
 	//depending on the current mode find coordinates on the drawing plane
 	Pixel result;
+	result.dist = P.dist;
 	V3 relative = P.pos - camera.pos;
 	
 	float coord1, coord2;
@@ -252,7 +253,7 @@ Pixel project_point(const Point& P){
 }
 
 Point project_point2(const Point& P){
-	calc_orient();
+	//calc_orient(); //test
 	//depending on the current mode find coordinates on the drawing plane
 	Point result;
 	V3 relative = P.pos - camera.pos;
@@ -304,10 +305,12 @@ void drawLine( Point start_float, Point end_float, COLORREF color){
 	
 };
 void calculate_distances(){
-	for (Point& point : allpoints) {
-		//point.dist = len(point.pos - camera.pos);
-	};
-	//printf("dists calculated\n");
+	for(int i = 0; i<width; i++) {
+	    for(int j = 0; j<height; j++) {
+	        pointGrid[i][j].dist = camera.forw*(pointGrid[i][j].pos);
+        }
+    }
+	printf("dists calculated\n");
 }
 
 void drawSegment(  Segment s, COLORREF color){ drawLine(  s.start, s.finish, s.start.color); }; //color
@@ -325,7 +328,7 @@ bool looksatme(Face face){
 	V3 potnorm = crossProduct(B-A,C-B);
 	if(potnorm*av<0) potnorm = -potnorm;
 	if(
-		potnorm*((Pmode) ? camera.pos-av : camera.pos) >= 0
+		potnorm*(camera.forw) <= 0 //(Pmode) ? camera.pos-av : camera.pos
 	) {
 		return true;
 	} else {
@@ -342,50 +345,43 @@ void drawFace(Face face){
 		for (Point& point : cont1) {
 			point = project_point2(point);
 		}
-		if(looksatme(face)){
-			fill_triangle(cont1, cont1);
-		}
+		fill_triangle(cont1, cont1);
+		//if(looksatme(face)){ fill_triangle(cont1, cont1); } //loses more than needed
 	}else{
 		drawSegments(  f, main_color);
 	}
-	
-	
 }
 void calculate_colors();
 void drawScene(){
 	//for each triangle call painter
 	InitializeBuffer(); //clean color buffer
 	resetZBuffer(); // clear depth buffer
-	//calculate_colors(); // --this was commented for speed up
-	//calculate_distances();
+	//calculate_colors(); // -- colors are fried into pixels
+	calculate_distances(); //needed each frame
+	calc_orient();
 	
 	Contour cont1;
 	Segments f;
 	bool quit = false;
 	if(Dmode){ //faces
-//		for (const Face& face : scene) {
-//        	cont1 = FaceToContour(face);
-//			for (Point& point : cont1) {
-//				point = project_point2(point);
-//			}
-//			if(!looksatme(face)){fill_triangle(cont1, cont1);}
-//    	};
+		//		
     	for (const Face& face : scene) {
         	cont1 = FaceToContour(face);
-			for (Point& point : cont1) {
-				point = project_point2(point);
+			for (Point& point : cont1) { 
+				point = project_point2(point); 
 				//if (point.pos.x > DRAW_WIDTH or point.pos.y > DRAW_WIDTH or point.pos.x < 0 or point.pos.y < 0) quit = true;
-			}
-			if(quit) break;
-			if(looksatme(face)){fill_triangle(cont1, cont1);}
+			} 
+			//if(quit) break;
+			//if(looksatme(face)){fill_triangle(cont1, cont1);}
+			fill_triangle(cont1, cont1);
     	}
 	}else{ //ireframes
 		for (const Face& face : scene) {
         	Contour cont1 = FaceToContour(face);
-        	for (Point& point : cont1) {
-				if (point.pos.x > DRAW_WIDTH or point.pos.y > DRAW_WIDTH or point.pos.x < 0 or point.pos.y < 0) quit = true;
-			}
-			if(quit) break;
+//        	for (Point& point : cont1) {
+//				if (point.pos.x > DRAW_WIDTH or point.pos.y > DRAW_WIDTH or point.pos.x < 0 or point.pos.y < 0) quit = true;
+//			}
+//			if(quit) break;
 			Segments f = convertContourToSegments(cont1 );
 			drawSegments(  f, main_color);
     	}

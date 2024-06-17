@@ -34,9 +34,17 @@ float scaledownVar = 5;
 COLORREF colorByHeight(float value){
 	float range = maxz - minz;
     float normalizedValue = (value - minz) / range;
-    int red = static_cast<int>(255 * normalizedValue);
-    int green = static_cast<int>(255 * (1 - normalizedValue));
-    int blue = 0;
+    int red, green, blue;
+    if(normalizedValue < 0.5){
+    	red = static_cast<int>(255 * normalizedValue);
+    	green = static_cast<int>(255 * (0.5 - normalizedValue));
+    	blue = 0;
+	} else {
+		red = 0;
+    	green = static_cast<int>(255 * (1 - normalizedValue));
+    	blue = static_cast<int>(255 * normalizedValue);
+	}
+     
     return RGB(red, green, blue);
 }
 

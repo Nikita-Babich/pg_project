@@ -43,8 +43,8 @@ int debug = 1;
 //My headers
 #include "colors.h" //independent
 #include "structs.h" //geometry core, include after vector and math
+#include "zbuffer.h" // after sizes define, before camera, before screen buffer
 #include "screen_buffer.h" //include after windows and colors and structs
-#include "zbuffer.h" // after sizes define, before camera
 #include "camera.h" //include after structs
 #include "reader.h" //after structs and camera, because contains settings
 
@@ -226,27 +226,27 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				// Process the F2 key. 
 				break; 
 				
-			case 'Q': turn(LEFT);  break;
-			case 'E': turn(RIGHT);  break;
-			case 'R': turn(UP);  break;
-			case 'F': turn(DOWN);  break;
+			//case 'Q': turn(LEFT);  break;
+			//case 'E': turn(RIGHT);  break;
+			//case 'R': turn(UP);  break;
+			//case 'F': turn(DOWN);  break;
 			
-			case 'W': move(FORWARD);  break;
-			case 'S': move(BACKWARD);  break;
-			case 'D': move(RIGHT);  break;
-			case 'A': move(LEFT);  break;
+			//case 'W': move(FORWARD);  break;
+			//case 'S': move(BACKWARD);  break;
+			//case 'D': move(RIGHT);  break;
+			//case 'A': move(LEFT);  break;
 			
 			
 			
 			case VK_SPACE: move(UP); break;
 			case VK_SHIFT: move(DOWN); break;
 			
-			case 'I': camera.dist = camera.dist - 0.1;  
-				//camera.pos = camera.dist * camera.pos;
-				break;
-			case 'K': camera.dist = camera.dist + 0.1; 
-				//camera.pos = camera.dist * camera.pos;
-				break;
+//			case 'I': camera.dist = camera.dist - 0.1;  
+//				//camera.pos = camera.dist * camera.pos;
+//				break;
+//			case 'K': camera.dist = camera.dist + 0.1; 
+//				//camera.pos = camera.dist * camera.pos;
+//				break;
 			
 			//case 'Z': Pmode = !Pmode; printf(" Spherical : %s\n", Pmode ? "true" : "false"); break;
 			case 'X': Dmode = !Dmode; printf(" Wireframe : %s\n", Dmode ? "false" : "true"); break;
@@ -267,10 +267,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				
 				break;
 			
-			//case 'T':   break;
-			//case 'G':   break;
-			//case 'H':   break;
-			//case 'F':   break;
+			case 'T': scale_heights(1.02); break;
+			case 'G': scale_heights(0.99); break;
+			case 'H': scale_all(1.02);  break;
+			case 'F': scale_all(0.99);  break;
 			
 			//case 'B': triangle_method = (triangle_method+1)%2;  break;
 			//case 'R': main_contour = rcont(10);  break;
@@ -281,7 +281,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				// Process other non-character keystrokes. 
 				break; 
         }
-        if(camera.dist<0)camera.dist=1;
+        //if(camera.dist<0)camera.dist=1;
         report();
         InvalidateRect(hwnd, NULL, FALSE);
         break;

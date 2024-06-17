@@ -51,15 +51,22 @@ void InitializeBuffer() {
     //printf( "\n buffer has %d %d %d", buffer[0], buffer[1], buffer[2]);
 }
 // Function to draw a pixel in buffer
-void DrawPixel(int x, int y, COLORREF color) {
+void DrawPixel(int x, int y, COLORREF color, float deep) {
     if (x >= 0 && x < WINDOW_WIDTH && y >= 0 && y < WINDOW_HEIGHT) {
-        buffer[y][x]= color;
-    }
+    	if(deep < zbuffer.depthBuffer[y][x]){ //xy order is at question 
+    		buffer[y][x]= color;
+    		zbuffer.depthBuffer[y][x] = deep;
+		};
+    };
 }
 void DrawPoint(Point A, COLORREF color){
-	DrawPixel(static_cast<int>(A.pos.x),static_cast<int>(A.pos.y), color); //was float
+	DrawPixel(static_cast<int>(A.pos.x),static_cast<int>(A.pos.y), color, A.dist); 
 }
 void dda2( Pixel start, Pixel end, COLORREF color) {
+	float deep1 = start.dist;
+	float deep2 = end.dist;
+	//float ddeep = (deep2-deep1)/ (float)steps; // defined lower after steps
+	
 	int x1 = start.x; int y1 = start.y;
 	int x2 = end.x; int y2 = end.y;
 	int DX = x2 - x1;
@@ -70,14 +77,17 @@ void dda2( Pixel start, Pixel end, COLORREF color) {
 		else steps = abs(DY);
 	dx = DX / (float)steps;
 	dy = DY / (float)steps;
+	float ddeep = (deep2-deep1)/ (float)steps;
 	float x = x1;
 	float y = y1;
+	float deep = deep1;
 	int i = 0;
 	while (i <= steps) {
 		//SetPixel(hdc, static_cast<int>(x), static_cast<int>(y), color);
-		DrawPixel(static_cast<int>(x), static_cast<int>(y), color);
+		DrawPixel(static_cast<int>(x), static_cast<int>(y), color, deep);
 		x = x + dx;
 		y = y + dy;
+		deep = deep + ddeep;
 		i++;
 	}
 };
@@ -151,7 +161,7 @@ void fill_sliced_triangle(Contour C, Contour orig){
 	};
 	while(y < ymax){
 		for(float i = std::min(x1, x2); i <= std::max(x1, x2); i=i+1){
-			DrawPixel(static_cast<int>(i),static_cast<int>(y), colorchooser(i,y,orig));
+			DrawPixel(static_cast<int>(i),static_cast<int>(y), colorchooser(i,y,orig), (C[0].dist+C[1].dist+C[2].dist)/3); //simplified deepness
 		}
 		x1 += we1;
 		x2 += we2;

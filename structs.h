@@ -28,6 +28,7 @@ typedef struct {	// 2d
     int x;          // X-coordinate
     int y;          // Y-coordinate
     COLORREF color; // Color information
+    float dist;
 } Pixel;
 
 //struct Face;
@@ -44,7 +45,7 @@ typedef struct {	// used for vectors and points in 3d and 2d
     V3 pos;
     V3 normal;
     COLORREF color; // Color information
-    //float dist = 10; //dist to camera
+    float dist; //dist to camera
     //std::vector<Face_*> facePtrs;
 } Point;
 
@@ -69,6 +70,7 @@ typedef std::vector<Point> Contour;
 typedef std::vector<Point> Allpoints;
 //typedef std::vector<Contour> Objects;
 typedef std::vector<Face> Scene;
+size_t height, width; //describes the scene
 
 Segments convertContourToSegments(Contour c){
 	int size = c.size();
