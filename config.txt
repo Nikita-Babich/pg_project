@@ -3,7 +3,7 @@ Projection Pmode 0-planar,1-spherical
 Drawing Dmode 0-wireframe,1-colored
 0
 Camera position
-1 -3 1
+-0.469495 -1.416739 -0.149750
 Light position
 3 3 3
 Light color

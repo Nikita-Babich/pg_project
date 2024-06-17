@@ -132,6 +132,7 @@ int WINAPI WinMain(
 	std::cout << "config complete\n";
 	
 	OpenFile();
+	calc_camera_pose();
 	
 	//readVtkFile(filepath1, allpoints, scene);
 	

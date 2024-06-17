@@ -13,8 +13,8 @@
 float FOV = 90;
 struct Camera_ {	// 
     V3 pos;          //position
-    float beta; 		//horisontal angle
-    float alpha;		//vertical angle, there is no roll
+    float beta = 5.963183; 		//horisontal angle 0.160000 5.963183
+    float alpha = 0.160000;		//vertical angle, there is no roll
     float dist=1.5;
     
     // result of orientation calculation, 3 relative vectors
@@ -80,9 +80,9 @@ V3 rotateAroundAxis(V3 p, V3 axis, float angle) {
     return result;
 }
 void calc_camera_pose(){
-	camera.pos.x = (maxx-minx)/2;
-	camera.pos.y = (maxy-miny)/2;
-	camera.pos.z = (maxz-minz)/2;
+	camera.pos.x = (maxx+minx)/2;
+	camera.pos.y = (maxy+miny)/2;
+	camera.pos.z = 0;
 }
 void calc_orient(){ //use alpha beta to calculte orientation vectors, matices
 	// horisontal rotation
@@ -202,10 +202,10 @@ void rot(Direction dir){
 		camera.beta += M_PI*2;
 	}
 	
-	camera.pos = camera.dist*((V3){0,-1,0});
+	//camera.pos = camera.dist*((V3){0,-1,0}); //test
 	calc_orient();
-	camera.pos = rotateAroundAxis(camera.pos, up_const, camera.beta);
-	camera.pos = rotateAroundAxis(camera.pos, camera.right, camera.alpha);
+	//camera.pos = rotateAroundAxis(camera.pos, up_const, camera.beta);
+	//camera.pos = rotateAroundAxis(camera.pos, camera.right, camera.alpha);
 	
 }
 
@@ -310,7 +310,7 @@ void calculate_distances(){
 	//printf("dists calculated\n");
 }
 
-void drawSegment(  Segment s, COLORREF color){ drawLine(  s.start, s.finish, color); };
+void drawSegment(  Segment s, COLORREF color){ drawLine(  s.start, s.finish, s.start.color); }; //color
 void drawSegments(  Segments f, COLORREF color){
 	for (const Segment& segment : f) {
 		drawSegment(  segment, color);
@@ -361,7 +361,8 @@ void drawScene(){
 	
 	Contour cont1;
 	Segments f;
-	if(Dmode){
+	bool quit = false;
+	if(Dmode){ //faces
 //		for (const Face& face : scene) {
 //        	cont1 = FaceToContour(face);
 //			for (Point& point : cont1) {
@@ -373,12 +374,18 @@ void drawScene(){
         	cont1 = FaceToContour(face);
 			for (Point& point : cont1) {
 				point = project_point2(point);
+				if (point.pos.x > DRAW_WIDTH or point.pos.y > DRAW_WIDTH or point.pos.x < 0 or point.pos.y < 0) quit = true;
 			}
+			if(quit) break;
 			if(looksatme(face)){fill_triangle(cont1, cont1);}
     	}
-	}else{
+	}else{ //ireframes
 		for (const Face& face : scene) {
         	Contour cont1 = FaceToContour(face);
+        	for (Point& point : cont1) {
+				if (point.pos.x > DRAW_WIDTH or point.pos.y > DRAW_WIDTH or point.pos.x < 0 or point.pos.y < 0) quit = true;
+			}
+			if(quit) break;
 			Segments f = convertContourToSegments(cont1 );
 			drawSegments(  f, main_color);
     	}

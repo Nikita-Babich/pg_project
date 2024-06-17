@@ -29,6 +29,7 @@ void ExtractRGBComponents(COLORREF color, int *red, int *green, int *blue) {
 float minz;
 float maxz;
 float minx, maxx, miny, maxy;
+float scaledownVar = 5;
 
 COLORREF colorByHeight(float value){
 	float range = maxz - minz;

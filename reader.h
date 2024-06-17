@@ -2,7 +2,9 @@
 #ifndef _READER_INCLUDED_
 #define _READER_INCLUDED_
 
-
+void scaledown(){
+	
+}
 void read_config(){
 	std::ifstream configFile("config.txt");
     if (!configFile) {
@@ -11,8 +13,8 @@ void read_config(){
     }
     
     camera.pos = {0,-1.5,0};
-	camera.beta = 0.1; // grows towards left
-	camera.alpha = 0.1; // grows towards up
+	//camera.beta = 0.1; // grows towards left
+	//camera.alpha = 0.1; // grows towards up
 	camera.dist = 1.5;
 
     std::string line;
@@ -273,22 +275,6 @@ void readVtkFile(const std::string& filepath, Allpoints& allpoints, Scene& scene
     calculate_colors();
 }
 
-//bool extractDimensions(const std::wstring& filename, size_t& width, size_t& height) {
-//    size_t start = filename.find(L'_');
-//    size_t end = filename.find(L'x', start);
-//    try {
-//        size_t width = std::stoul(filename.substr(start + 1, end - start - 1));
-//        size_t height = std::stoul(filename.substr(end + 1, filename.find(L'.', end) - end - 1));
-//        
-//    } catch (const std::invalid_argument& e) {
-//        std::wcerr << L"Invalid argument: " << e.what() << std::endl;
-//        return false;
-//    } catch (const std::out_of_range& e) {
-//        std::wcerr << L"Out of range: " << e.what() << std::endl;
-//        return false;
-//    }
-//    return true;
-//}
 int extractDimensionFromFile(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -357,13 +343,14 @@ void OpenFile() {
         for(int i = 0; i<width; i++) {
 	        for(int j = 0; j<height; j++) {
 	        	file >> a >> b >> c;
+	        	
 	        	if(a<minx)minx=a;
 	        	if(a>maxx)maxx=a;
 	        	if(b<miny)miny=b;
 	        	if(b>maxy)maxy=b;
 	        	if(c<minz)minz=c;
 	        	if(c>maxz)maxz=c;
-	            V3 readCoords = {a, b, c};
+	            V3 readCoords = {a, b, -c}; // replace with scaling
 	            Point newPoint;
 	            newPoint.pos = readCoords;
 	            newPoint.color = colorByHeight(c);
@@ -373,6 +360,13 @@ void OpenFile() {
         }
         calc_camera_pose();
     	std::cerr << "pointgrid filled" << minx << " " << maxx << " " << miny << " " << maxy << " " << minz << " " << maxz << " " <<"\n";
+    	for(int i = 0; i<width; i++) {
+	    	for(int j = 0; j<height; j++) {
+	    		float c = pointGrid[i][j].pos.z;
+	        	pointGrid[i][j].pos.z = (c-minz) / (maxz-minz) * scaledownVar;
+        	}
+    	}	
+    	std::cerr << "scaledown done\n" ;
     	//calculate normals
     	for(int i = 0; i<width; i++) {
 	        for(int j = 0; j<height; j++) {
