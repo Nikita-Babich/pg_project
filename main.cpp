@@ -128,7 +128,7 @@ int WINAPI WinMain(
 	// Segment for setup
 	
 	//first read here
-	read_config();
+	read_config(); //this line works only once. Causes 322.. if used again
 	std::cout << "config complete\n";
 	
 	OpenFile();

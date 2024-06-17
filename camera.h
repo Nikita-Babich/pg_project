@@ -351,7 +351,7 @@ void drawScene(){
 	//for each triangle call painter
 	InitializeBuffer(); //clean color buffer
 	resetZBuffer(); // clear depth buffer
-	calculate_colors();
+	//calculate_colors(); // --this was commented for speed up
 	//calculate_distances();
 	
 	Contour cont1;

@@ -347,7 +347,7 @@ void OpenFile() {
     	height = extractDimensionFromFile(normalFileString);
     	width = height;
     	std::cout << width << " " << height << " ";
-    	std::vector<std::vector<Point>>().swap(pointGrid); //swapt with empty to release old memory
+    	std::vector<std::vector<Point>>().swap(pointGrid); //swap with empty to release old memory
     	pointGrid.resize(width, std::vector<Point>(height));
     	std::cout << "grid resized\n";
     	
@@ -385,8 +385,24 @@ void OpenFile() {
 	    std::cout << "normals calculated\n";
     	
         allpoints.clear(); scene.clear(); //reset
-    	//save allpoints
-    	//save scene
+    	//save allpoints, ?
+    	
+    	
+    	//save scene std::vector<Face> Scene
+    	Face tempface;
+    	for(int i = 0; i< width-1; i++){
+    		for(int j = 0; j< height-1; j++){
+    			tempface.A = &(pointGrid[i][j]);
+    			tempface.B = &(pointGrid[i+1][j]);
+    			tempface.C = &(pointGrid[i][j+1]);
+    			scene.push_back(tempface);
+    			tempface.A = &(pointGrid[i+1][j]);
+    			tempface.B = &(pointGrid[i+1][j+1]);
+    			tempface.C = &(pointGrid[i][j+1]);
+    			scene.push_back(tempface);
+    		}
+		}
+    	std::cout << "scene filled\n";
     	file.close();
     } else {
         std::cout << "No file selected or an error occurred." << std::endl;
