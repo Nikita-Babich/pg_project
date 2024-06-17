@@ -274,6 +274,24 @@ void readVtkFile(const std::string& filepath, Allpoints& allpoints, Scene& scene
     calculate_normals();
     calculate_colors();
 }
+void calculate_normals_new(){
+	for(int i = 0; i<width; i++) {
+	        for(int j = 0; j<height; j++) {
+	        	//if on the edge, 0,0,1, else - depending on the neighbours
+	        	if( i==0 or i == width-1 or j == 0 or j == height-1){
+	        		pointGrid[i][j].normal = {0,0,1};
+				} else{
+					pointGrid[i][j].normal = normalFrom4(
+						pointGrid[i-1][j].pos, 
+						pointGrid[i+1][j].pos, 
+						pointGrid[i][j-1].pos, 
+						pointGrid[i][j+1].pos
+						);
+				}
+	        }
+	    }
+	    std::cout << "normals calculated\n";
+}
 
 int extractDimensionFromFile(const std::string& filename) {
     std::ifstream file(filename);
@@ -371,22 +389,8 @@ void OpenFile() {
     	}	
     	std::cerr << "scaledown done\n" ;
     	//calculate normals
-    	for(int i = 0; i<width; i++) {
-	        for(int j = 0; j<height; j++) {
-	        	//if on the edge, 0,0,1, else - depending on the neighbours
-	        	if( i==0 or i == width-1 or j == 0 or j == height-1){
-	        		pointGrid[i][j].normal = {0,0,1};
-				} else{
-					pointGrid[i][j].normal = normalFrom4(
-						pointGrid[i-1][j].pos, 
-						pointGrid[i+1][j].pos, 
-						pointGrid[i][j-1].pos, 
-						pointGrid[i][j+1].pos
-						);
-				}
-	        }
-	    }
-	    std::cout << "normals calculated\n";
+    	calculate_normals_new();
+    	
     	
         allpoints.clear(); scene.clear(); //reset
     	//save allpoints, ?
