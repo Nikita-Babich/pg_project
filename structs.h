@@ -101,6 +101,7 @@ Allpoints allpoints;
 Point light;
 float mirror_sharp = 2;
 float amb_coef = 0.5;
+bool reflect = false;
 bool Pmode = false; //plane(false) vs spherical(true) projection. USES ONLY FALSE
 bool Dmode = false; //wireframe vs coloring
 //range of geometry is in colors.h

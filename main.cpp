@@ -46,7 +46,7 @@ int debug = 1;
 #include "zbuffer.h" // after sizes define, before camera, before screen buffer
 #include "screen_buffer.h" //include after windows and colors and structs
 #include "camera.h" //include after structs
-#include "reader.h" //after structs and camera, because contains settings
+#include "reader.h" //after structs and camera, because contains settings; calculte colors
 
 
 //End of my headers
@@ -250,7 +250,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			
 			//case 'Z': Pmode = !Pmode; printf(" Spherical : %s\n", Pmode ? "true" : "false"); break;
 			case 'X': Dmode = !Dmode; printf(" Wireframe : %s\n", Dmode ? "false" : "true"); break;
-			case 'C': break;
+			case 'C': reflect = !reflect;
 			case 'V': triangle_method = !triangle_method; printf(" Goraud : %s\n", triangle_method ? "true" : "false"); break;
 			case 'O': OpenFile(); break;
 				

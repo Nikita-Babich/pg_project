@@ -377,7 +377,7 @@ void OpenFile() {
 	            V3 readCoords = {
 					static_cast<float>(a), 
 					static_cast<float>(b), 
-					static_cast<float>(-c)}; // replace with scaling
+					static_cast<float>(-c/2)}; 
 	            Point newPoint;
 	            newPoint.pos = readCoords;
 	            newPoint.basecolor = colorByHeight(c);
@@ -388,7 +388,7 @@ void OpenFile() {
         calculate_colors();
         calc_camera_pose();
         //light.pos=camera.pos; 
-		light.pos.z = minz;
+		light.pos.z = -(maxx-minx);
 		light.pos.x = minx;
 		light.pos.y = miny;
     	std::cerr << "pointgrid filled" << minx << " " << maxx << " " << miny << " " << maxy << " " << minz << " " << maxz << " " <<"\n";

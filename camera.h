@@ -364,18 +364,20 @@ void drawScene(){
 	
 	Contour cont1;
 	Segments f;
+	//Point point2;
 	bool quit = false;
 	if(Dmode){ //faces
 		//		
-    	for (const Face& face : scene) {
+    	for (const Face& face : scene) { //?
+    		quit = false;
         	cont1 = FaceToContour(face);
 			for (Point& point : cont1) { 
 				point = project_point2(point); 
-				//if (point.pos.x > DRAW_WIDTH or point.pos.y > DRAW_WIDTH or point.pos.x < 0 or point.pos.y < 0) quit = true;
+				if (point.pos.x > DRAW_WIDTH+1 or point.pos.y > DRAW_WIDTH+1 or point.pos.x < -4 or point.pos.y < -4) quit = true;
 			} 
-			//if(quit) break;
+			if(!quit) fill_triangle(cont1, cont1);;
 			//if(looksatme(face)){fill_triangle(cont1, cont1);}
-			fill_triangle(cont1, cont1);
+			//fill_triangle(cont1, cont1);
     	}
 	}else{ //ireframes
 		for (const Face& face : scene) {
