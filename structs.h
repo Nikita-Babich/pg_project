@@ -45,7 +45,9 @@ typedef struct {	// used for vectors and points in 3d and 2d
     V3 pos;
     V3 normal;
     COLORREF color; // Color information
+    COLORREF basecolor;
     float dist; //dist to camera
+    //V3 ghost; //used by light
     //std::vector<Face_*> facePtrs;
 } Point;
 

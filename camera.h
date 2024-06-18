@@ -22,6 +22,7 @@ struct Camera_ {	//
     V3 right; //from x
     V3 up; //from z
     
+    V3 ghost;
     //float w=FOV;//angles of the FOV
     //float h=FOV;
 };
@@ -82,7 +83,7 @@ V3 rotateAroundAxis(V3 p, V3 axis, float angle) {
 void calc_camera_pose(){
 	camera.pos.x = (maxx+minx)/2;
 	camera.pos.y = (maxy+miny)/2;
-	camera.pos.z = 0;
+	camera.pos.z = -1;
 }
 void calc_orient(){ //use alpha beta to calculte orientation vectors, matices
 	// horisontal rotation
@@ -201,7 +202,7 @@ void rot(Direction dir){
 	if(camera.beta < 0 ) {
 		camera.beta += M_PI*2;
 	}
-	
+	camera.ghost = camera.pos - camera.forw;
 	//camera.pos = camera.dist*((V3){0,-1,0}); //test
 	//calc_orient();
 	//camera.pos = rotateAroundAxis(camera.pos, up_const, camera.beta);
@@ -357,7 +358,7 @@ void drawScene(){
 	//for each triangle call painter
 	InitializeBuffer(); //clean color buffer
 	resetZBuffer(); // clear depth buffer
-	//calculate_colors(); // -- colors are fried into pixels
+	calculate_colors(); // -- colors are not fried into pixels
 	calculate_distances(); //needed each frame
 	calc_orient();
 	

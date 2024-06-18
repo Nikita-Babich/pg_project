@@ -100,9 +100,9 @@ int limitTo0To255(float value) {
 }
 COLORREF extract_color(Point point){
 	
-	V3 v = normalise(camera.pos - point.pos);
+	V3 v = normalise(camera.ghost - point.pos);
 	V3 n = point.normal;
-	V3 l = normalise(light.pos - point.pos);
+	V3 l = normalise(light.pos- point.pos);
 	V3 r = calculateReflection(l,n);
 	
 	int lred,lgreen,lblue;
@@ -115,7 +115,8 @@ COLORREF extract_color(Point point){
 	float mrf=mr/255.0, mgf=mg/255.0, mbf=mb/255.0;
 	
 	int dr,dg,db;
-	ExtractRGBComponents(diffusion, &dr, &dg, &db);
+	COLORREF obj_color = point.color;
+	ExtractRGBComponents(obj_color, &dr, &dg, &db); //diffusion replaced with object color
 	float drf=dr/255.0, dgf=dg/255.0, dbf=db/255.0;
 	
 	int ar,ag,ab;
@@ -154,9 +155,14 @@ COLORREF extract_color(Point point){
 	
 }
 void calculate_colors(){
-	for (Point& point : allpoints) {
-		point.color = extract_color(point);
-	};
+//	for (Point& point : allpoints) {
+//		point.color = extract_color(point);
+//	};
+	for(int i = 0; i<width; i++) {
+	    for(int j = 0; j<height; j++) {
+	    	pointGrid[i][j].color = extract_color(pointGrid[i][j]);
+        }
+    };
 	printf("colors calculated\n");
 }
 
@@ -378,8 +384,10 @@ void OpenFile() {
 	            // fill global pointGrid
 	            pointGrid[i][j] = newPoint;
         	}
-        }
+        };
+        calculate_colors();
         calc_camera_pose();
+        light.pos=camera.pos; light.pos.z -= 5;
     	std::cerr << "pointgrid filled" << minx << " " << maxx << " " << miny << " " << maxy << " " << minz << " " << maxz << " " <<"\n";
     	for(int i = 0; i<width; i++) {
 	    	for(int j = 0; j<height; j++) {

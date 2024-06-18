@@ -15,7 +15,7 @@ Object diffusion
 Object mirror 
 50 254 50
 Object ambient
-100 150 30
+150 150 150
 Mirror sharpness
 10
 Ambience coef
