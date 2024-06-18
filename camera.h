@@ -96,7 +96,7 @@ void calc_orient(){ //use alpha beta to calculte orientation vectors, matices
 
 void move(Direction dir){
 	//calc_orient();
-	float ms = 0.05; //ms = movement speed
+	float ms = 1; //ms = movement speed
 	switch (dir) {
     case LEFT:
         camera.pos += ms * (- camera.right);
@@ -110,12 +110,12 @@ void move(Direction dir){
     case DOWN:
         camera.pos += ms * ( -up_const );
         break;
-    case FORWARD:
-        camera.pos += ms * ( camera.forw);
-        break;
-    case BACKWARD:
-        camera.pos += ms * (- camera.forw);
-        break;
+//    case FORWARD:
+//        camera.pos += ms * ( camera.forw);
+//        break;
+//    case BACKWARD:
+//        camera.pos += ms * (- camera.forw);
+//        break;
     default:
         
         break;
@@ -280,8 +280,8 @@ Point project_point2(const Point& P){
 		coord1 = (relative*camera.right) / len(camera.right);
 		coord2 = (relative*camera.up) / len(camera.up);
 		
-		coord1 *= scaling *2;
-		coord2 *= scaling *2;
+		coord1 *= scaling ;
+		coord2 *= scaling ;
 		
 		c1 = coord1 + DRAW_WIDTH/2; //  + DRAW_WIDTH/2;
 		c2 = coord2 + DRAW_WIDTH/2;

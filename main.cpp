@@ -231,10 +231,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			//case 'R': turn(UP);  break;
 			//case 'F': turn(DOWN);  break;
 			
-			//case 'W': move(FORWARD);  break;
-			//case 'S': move(BACKWARD);  break;
-			//case 'D': move(RIGHT);  break;
-			//case 'A': move(LEFT);  break;
+			case 'W': move(UP);  break;
+			case 'S': move(DOWN);  break;
+			case 'A': move(RIGHT);  break;
+			case 'D': move(LEFT);  break;
 			
 			
 			
@@ -267,10 +267,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				
 				break;
 			
-			case 'T': scale_heights(1.02); break;
-			case 'G': scale_heights(0.99); break;
-			case 'H': scale_all(1.02);  break;
-			case 'F': scale_all(0.99);  break;
+			case 'T': scale_heights(1.05); break;
+			case 'G': scale_heights(0.95); break;
+			case 'H': scale_all(1.05);  break;
+			case 'F': scale_all(0.95);  break;
 			
 			//case 'B': triangle_method = (triangle_method+1)%2;  break;
 			//case 'R': main_contour = rcont(10);  break;
