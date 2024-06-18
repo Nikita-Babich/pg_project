@@ -202,7 +202,7 @@ void rot(Direction dir){
 	if(camera.beta < 0 ) {
 		camera.beta += M_PI*2;
 	}
-	camera.ghost = camera.pos - camera.forw;
+	camera.ghost = camera.pos - (maxx-minx)*camera.forw;
 	//camera.pos = camera.dist*((V3){0,-1,0}); //test
 	//calc_orient();
 	//camera.pos = rotateAroundAxis(camera.pos, up_const, camera.beta);

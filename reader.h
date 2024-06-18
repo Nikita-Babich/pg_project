@@ -115,7 +115,7 @@ COLORREF extract_color(Point point){
 	float mrf=mr/255.0, mgf=mg/255.0, mbf=mb/255.0;
 	
 	int dr,dg,db;
-	COLORREF obj_color = point.color;
+	COLORREF obj_color = point.basecolor;
 	ExtractRGBComponents(obj_color, &dr, &dg, &db); //diffusion replaced with object color
 	float drf=dr/255.0, dgf=dg/255.0, dbf=db/255.0;
 	
@@ -380,14 +380,17 @@ void OpenFile() {
 					static_cast<float>(-c)}; // replace with scaling
 	            Point newPoint;
 	            newPoint.pos = readCoords;
-	            newPoint.color = colorByHeight(c);
+	            newPoint.basecolor = colorByHeight(c);
 	            // fill global pointGrid
 	            pointGrid[i][j] = newPoint;
         	}
         };
         calculate_colors();
         calc_camera_pose();
-        light.pos=camera.pos; light.pos.z -= 5;
+        //light.pos=camera.pos; 
+		light.pos.z = minz;
+		light.pos.x = minx;
+		light.pos.y = miny;
     	std::cerr << "pointgrid filled" << minx << " " << maxx << " " << miny << " " << maxy << " " << minz << " " << maxz << " " <<"\n";
     	for(int i = 0; i<width; i++) {
 	    	for(int j = 0; j<height; j++) {
