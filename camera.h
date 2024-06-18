@@ -256,6 +256,7 @@ Point project_point2(const Point& P){
 	//calc_orient(); //test
 	//depending on the current mode find coordinates on the drawing plane
 	Point result;
+	result.dist = P.dist;
 	V3 relative = P.pos - camera.pos;
 	
 	float coord1, coord2;
