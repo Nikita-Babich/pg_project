@@ -74,7 +74,7 @@ typedef std::vector<Point> Allpoints;
 typedef std::vector<Face> Scene;
 size_t height, width; //describes the scene
 
-Segments convertContourToSegments(Contour c){
+Segments convertContourToSegments(Contour& c){
 	int size = c.size();
 	Segments result;
 	Segment segment;

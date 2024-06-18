@@ -97,7 +97,7 @@ void dda2( Pixel start, Pixel end, COLORREF color) {
 
 bool triangle_method = true;
 //triangle section
-COLORREF colorchooser(float x, float y, Contour C){
+COLORREF colorchooser(float x, float y, Contour& C){
 	Point P;
 	P.pos = {x,y,0};
 	if(triangle_method){ //blend
@@ -150,7 +150,7 @@ COLORREF colorchooser(float x, float y, Contour C){
 	};
 	return RED;
 }
-void fill_sliced_triangle(Contour C, Contour orig){
+void fill_sliced_triangle(Contour& C, Contour& orig){
 	Segment e1, e2; float we1, we2;
 	float y = e1.start.pos.y; float ymax = e1.finish.pos.y;
 	float x1 = e1.start.pos.x; float x2 = e2.start.pos.x;
@@ -182,7 +182,7 @@ void fill_sliced_triangle(Contour C, Contour orig){
 		y+=1;
 	}
 }
-void fill_triangle(Contour C, Contour orig){
+void fill_triangle(Contour& C, Contour& orig){
 	std::sort(C.begin(), C.end(), [](const Point& a, const Point& b) {
         if (a.pos.y == b.pos.y) return a.pos.x < b.pos.x;
         return a.pos.y < b.pos.y;
